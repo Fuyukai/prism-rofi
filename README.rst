@@ -4,6 +4,10 @@
 This is a helper script that allows running Prism Launcher instances from a ``dmenu``-compatible
 runner. Despite the name, it supports multiple runners.
 
+.. image:: demo.png
+    :alt: Demo image showing off 5 instances.
+
+
 Usage
 -----
 
