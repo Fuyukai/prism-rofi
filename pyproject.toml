@@ -1,0 +1,58 @@
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "prism-rofi"
+version = "0.7.0"
+description = "Prism Launcher shim for Rofi"
+authors = ["Lura Skye <l@veriny.tf>"]
+readme = "README.rst"
+license = "GPL-3.0-or-later"
+packages = [{include = "prism_rofi", from = "src"}]
+
+[tool.poetry.dependencies]
+python = ">=3.11"
+
+[tool.poetry.group.dev.dependencies]
+ruff = ">=0.1.11"
+pyright = ">=1.1.345"
+
+[tool.ruff]
+target-version = "py312"
+respect-gitignore = true
+# fix = true
+src = ["src/prism_rofi"]
+line-length = 100
+show-source = true
+
+select = [
+  "RUF",
+  "F",
+  "E",
+  "W",
+  "I",
+  "UP",
+  "B",
+  "Q",
+  "YTT",
+  "PYI",
+  "SIM",
+  "RET",
+  "PERF",
+  "PIE",
+  "SIM",
+]
+ignore = [
+    "W291",
+    "W293",
+]
+
+[tool.ruff.per-file-ignores]
+"tests/test_*" = ["D"]
+
+[tool.ruff.isort]
+combine-as-imports = true
+
+[tool.poetry.scripts]
+"prism-rofi" = "prism_rofi.__main__:main"
