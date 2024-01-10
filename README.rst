@@ -1,6 +1,9 @@
 ``prism-rofi``
 ==============
 
+.. image:: https://badge.fury.io/py/prism-rofi.svg
+    :target: https://badge.fury.io/py/prism-rofi
+
 This is a helper script that allows running Prism Launcher instances from a ``dmenu``-compatible
 runner. Despite the name, it supports multiple runners.
 
