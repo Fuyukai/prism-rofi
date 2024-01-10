@@ -34,6 +34,7 @@ Currently supported runners:
 
 - `rofi <https://github.com/davatorium/rofi>`__ (`wayland version <https://github.com/lbonn/rofi>`_)
 - `wofi <https://hg.sr.ht/~scoopta/wofi>`__ (content warning: s\*rceh\*t link)
+- `fuzzel <https://codeberg.org/dnkl/fuzzel>`__ 
 
 Icons
 -----
@@ -45,5 +46,11 @@ This project includes a small number of project icons used by various modloaders
 - The `Quilt <https://quiltmc.net/>`_ icon, used for Quilt instances
 - The `NeoForge <https://neoforged.net/>`_ icon, used for NeoForge instances
 - The `MultiMC grass icon` as shipped by Prism, used for vanilla/unrecognised instances
+
+Special Credits
+---------------
+
+Shoutouts to the `kaokao <https://github.com/fruitsbat/kaokao>`_ project, which is what gave me this
+idea in the first place!
 
 .. _MultiMC grass icon: https://github.com/PrismLauncher/PrismLauncher/blob/43dd929214cfa84471460f6cf8547c7a3993831c/launcher/resources/multimc/32x32/instances/grass_legacy.png

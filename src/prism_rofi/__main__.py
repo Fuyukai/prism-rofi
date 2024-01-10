@@ -22,9 +22,25 @@ HOME = os.getenv("HOME", os.path.join("/home", _username))
 XDG_DATA_HOME = os.getenv("XDG_DATA_HOME", os.path.join(HOME, ".local", "share"))
 
 
+# Developer note: Want to add support to another runner?
+# That's excellent! You need to modify three things:
+# 1) You need to add a new runner to the ``SupportedRunner`` enum below. 
+# 2) You need to add a branch to ``write_instance_string``. This writes the entries to stdin of the
+#    spawned runner process ala ``dmenu``.
+# 3) Finally, you need to add a branch to ``get_runner_args`` which will return a list of CLI 
+#    arguments to run the actual runner with. You usually want to enable icons and case-insensitive
+#    matching there. 
+#
+# Then, just run ``prism-rofi --runner myrunner``.
+#
+# Funnily enough, despite using the real dmenu protocol, this doesn't (yet) support the real
+# dmenu because I use Wayland and dmenu doesn't work on Wayland. (I also use an NVIDIA GPU. Beware.)
+
+
 class SupportedRunner(enum.Enum):
     ROFI = "rofi"
     WOFI = "wofi"
+    FUZZEL = "fuzzel"
 
 
 @dataclass
@@ -90,7 +106,6 @@ class Instance:
         return buf.getvalue()
     
 
-
 def write_instance_string(
     runner: SupportedRunner, 
     buffer: BytesIO,
@@ -101,22 +116,22 @@ def write_instance_string(
     Writes a single instance string out to the provided buffer.
     """
 
-    if runner == SupportedRunner.WOFI:
-        buffer.write(b"img:")
-        buffer.write(str(icon_path.absolute()).encode())
-        buffer.write(b":text:")
-        buffer.write(str(instance).encode())
-        buffer.write(b"\n")
+    match runner.value:
+        case "rofi" | "fuzzel":
+            buffer.write(str(instance).encode())
+            buffer.write(b"\x00icon\x1f")
 
-    elif runner == SupportedRunner.ROFI:
-        buffer.write(str(instance).encode())
-        buffer.write(b"\x00icon\x1f")
+            # Note to future readers: the advice online says use ``file://``, but that doesn't
+            # work!
+            buffer.write(str(icon_path.absolute()).encode())
+            buffer.write(b"\n")
 
-        # Note to future readers: the advice online says use ``file://``, but that doesn't
-        # work!
-        buffer.write(str(icon_path.absolute()).encode())
-        buffer.write(b"\n")
-
+        case "wofi":
+            buffer.write(b"img:")
+            buffer.write(str(icon_path.absolute()).encode())
+            buffer.write(b":text:")
+            buffer.write(str(instance).encode())
+            buffer.write(b"\n")
 
 def get_runner_args(
     runner: SupportedRunner,
@@ -147,6 +162,11 @@ def get_runner_args(
                 "--insensitive"
             ]
         
+        case "fuzzel":
+            return [
+                exe_path,
+                "--dmenu"
+            ]
     
 def get_prism_subdir(
     base_dir: Path, 
